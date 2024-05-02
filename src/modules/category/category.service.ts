@@ -2,19 +2,21 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Category, CategoryDocument } from './entities/category.entity';
+import { CreateCategoryDto } from './dto/create-category.dto';
 
 @Injectable()
 export class CategoriesService {
     constructor(@InjectModel(Category.name) private readonly categoryModel: Model<CategoryDocument>) {}
 
-    async createCategory(name: string): Promise<Category> {
-        const createdCategory = new this.categoryModel({ name });
+    async createCategory(createCategory: CreateCategoryDto): Promise<Category> {
+        const createdCategory = new this.categoryModel(createCategory);
         return createdCategory.save();
     }
 
-    async getCategoryByName(name: string): Promise<Category | null> {
+    async getCategoryByName(name: string): Promise<boolean> {
         const category = await this.categoryModel.findOne({ name }).exec();
-        return category;
+        return !!category; // Returns true if category exists, false otherwise
+
     }
 
     async findAllCategories(): Promise<Category[]> {
