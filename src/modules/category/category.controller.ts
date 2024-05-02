@@ -1,6 +1,7 @@
 import { Controller, Get, Post, Put, Body, Param, NotFoundException, Delete, HttpCode, HttpStatus } from '@nestjs/common';
 import { CategoriesService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
+import { UpdateCategoryDto } from './dto/update-category.dto';
 
 @Controller('categories')
 export class CategoriesController {
@@ -36,18 +37,23 @@ export class CategoriesController {
     // Update a category by ID
     @Put(':id')
     @HttpCode(HttpStatus.OK) // Set HTTP status code to 200 (OK) for successful update
-    async updateCategory(@Param('id') id: string, @Body('name') newName: string) {
-        return await this.categoriesService.updateCategory(id, newName);
+    async updateCategory(@Param('id') id: string, @Body() updateCategory: UpdateCategoryDto) {
+        const { name } = updateCategory;
+        const categoryExist = await this.categoriesService.getCategoryByName(name);
+
+        if (categoryExist) {
+            throw new NotFoundException(`Category with name '${name}' already exists.`);
+        }
+        const updatedCategory = await this.categoriesService.updateCategory(id, updateCategory);
+
+        return updatedCategory
     }
 
     // Delete a category by ID
     @Delete(':id')
     @HttpCode(HttpStatus.OK) // Set HTTP status code to 200 (OK) for successful deletion
     async deleteCategory(@Param('id') id: string) {
-        const deletedCategory = await this.categoriesService.deleteCategory(id);
-        if (!deletedCategory) {
-            throw new NotFoundException(`Category with ID '${id}' not found.`);
-        }
+        await this.categoriesService.deleteCategory(id);
         return { message: `Category with ID '${id}' has been deleted successfully.` };
     }
 }

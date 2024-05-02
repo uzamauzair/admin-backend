@@ -1,7 +1,7 @@
 import { IsNotEmpty, IsString, Validate } from "class-validator"
 import { IsNameUnique } from "../validators/category.validator";
 
-export class CreateCategoryDto {
+export class UpdateCategoryDto {
 
     @IsString()
     @IsNotEmpty()
