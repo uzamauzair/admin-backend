@@ -2,7 +2,7 @@ import { Controller, Post, Body, HttpStatus, HttpCode, BadRequestException, UseI
 import { MulterS3 } from 'multer-s3';
 import { ItemsService } from './item.service';
 import { CreateItemDto } from './dto/create-item.dto';
-import { S3FileInterceptor } from 'src/common/interceptors/s3-file.interceptor'; // Custom interceptor for handling S3 file uploads
+import { S3FileInterceptor } from 'src/common/interceptors/s3-file.interceptor';  // Custom interceptor for handling S3 file uploads
 import { NestInterceptor } from '@nestjs/common';
 
 @Controller('items')
