@@ -76,4 +76,14 @@ export class ItemsService {
 
         return updatedItem; // Return the updated item
     }
+
+    // Delete item by ID
+    async deleteItem(id: string) {
+        this.validateItemId(id);
+
+        const deleteItem = await this.itemModel.findByIdAndDelete(id).exec()
+        if (!deleteItem) {
+            throw new NotFoundException(`Item with ID ${id} not found`);
+        }
+    }
 }

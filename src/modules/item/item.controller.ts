@@ -1,4 +1,4 @@
-import { Controller, Post, Body, HttpStatus, HttpCode, BadRequestException, UseInterceptors, UploadedFiles, Get, Param, Put } from '@nestjs/common';
+import { Controller, Post, Body, HttpStatus, HttpCode, BadRequestException, UseInterceptors, UploadedFiles, Get, Param, Put, Delete } from '@nestjs/common';
 import { MulterS3 } from 'multer-s3';
 import { ItemsService } from './item.service';
 import { CreateItemDto } from './dto/create-item.dto';
@@ -67,6 +67,17 @@ export class ItemsController {
             throw new BadRequestException('Failed to update item');
         }
     }
+
+    // Delete /items/:id - Delete item by ID
+    @Delete(':id')
+    @HttpCode(HttpStatus.OK)
+    async getDefaultAutoSelectFamilyAttemptTimeout(
+        @Param('id') id: string
+    ) {
+        await this.itemsService.deleteItem(id)
+        return { message: `Item with ID '${id}' has been deleted successfully.` };
+    }
+
 }
 
 // Factory function to create S3FileInterceptor instance
