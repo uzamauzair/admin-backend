@@ -59,4 +59,9 @@ export class ItemsService {
 
         return item
     }
+
+    async getItemByName(name: string): Promise<boolean> {
+        const item = await this.itemModel.findOne({ name }).exec();
+        return !!item
+    }
 }
