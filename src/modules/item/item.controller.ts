@@ -1,4 +1,4 @@
-import { Controller, Post, Body, HttpStatus, HttpCode, BadRequestException, UseInterceptors, UploadedFiles } from '@nestjs/common';
+import { Controller, Post, Body, HttpStatus, HttpCode, BadRequestException, UseInterceptors, UploadedFiles, Get } from '@nestjs/common';
 import { MulterS3 } from 'multer-s3';
 import { ItemsService } from './item.service';
 import { CreateItemDto } from './dto/create-item.dto';
@@ -24,6 +24,12 @@ export class ItemsController {
         } catch (error) {
             throw new BadRequestException('Failed to create item');
         }
+    }
+
+    @Get()
+    @HttpCode(HttpStatus.OK)
+    async getAllItems() {
+        return await this.itemsService.getAllItems()
     }
 }
 

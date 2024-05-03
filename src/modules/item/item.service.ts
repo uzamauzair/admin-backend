@@ -34,4 +34,10 @@ export class ItemsService {
             throw new BadRequestException('Failed to create item');
         }
     }
+
+    async getAllItems(): Promise<Item[]> {
+
+        return await this.itemModel.find().exec()
+
+    }
 }
