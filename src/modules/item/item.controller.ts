@@ -7,14 +7,13 @@ import { NestInterceptor } from '@nestjs/common';
 
 @Controller('items')
 export class ItemsController {
-    constructor(private readonly itemsService: ItemsService) {}
+    constructor(private readonly itemsService: ItemsService
+    ) {}
 
     @Post()
     @HttpCode(HttpStatus.CREATED)
     @UseInterceptors(createS3FileInterceptor('images')) // Apply S3FileInterceptor to handle image uploads
     async createItem(@Body() createItemDto: CreateItemDto, @UploadedFiles() files: Array<MulterS3.File>) {
-        console.log("Request Body:", createItemDto);
-        console.log("Uploaded Files:", files);
 
         try {
             if (!files || !files.length) {
