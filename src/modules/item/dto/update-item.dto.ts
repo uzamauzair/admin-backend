@@ -1,5 +1,7 @@
-import { IsNotEmpty, IsNumber, IsString, IsUrl, Min } from 'class-validator';
-import mongoose from 'mongoose'
+import { IsNotEmpty, IsString, IsUrl, ValidateNested } from 'class-validator';
+import { Type } from 'class-transformer';
+import { VariantDto } from './variant-item.dto';
+
 
 export class UpdateItemDto {
     @IsNotEmpty()
@@ -10,19 +12,15 @@ export class UpdateItemDto {
     description: string;
 
     @IsNotEmpty()
-    @IsNumber()
-    @Min(0.01)
-    price: number;
-
-    @IsNotEmpty()
     @IsUrl({}, { each: true })
     images: string[];
 
     @IsNotEmpty()
-    @IsNumber()
-    @Min(0)
-    quantity: number;
+    @IsString()
+    categoryId: string;
 
     @IsNotEmpty()
-    categoryId: mongoose.Schema.Types.ObjectId;
+    @ValidateNested({ each: true })
+    @Type(() => VariantDto)
+    variants: VariantDto[];
 }

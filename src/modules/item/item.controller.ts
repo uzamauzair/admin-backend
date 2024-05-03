@@ -23,6 +23,9 @@ export class ItemsController {
             if (!files || !files.length) {
                 throw new BadRequestException('No image uploaded'); // Handle missing image
             }
+
+            const parsedVariants = JSON.parse(createItemDto.variants.toString())
+            createItemDto.variants = parsedVariants
             const newItem = await this.itemsService.createItem(createItemDto, files);
             return { message: 'Item created successfully', item: newItem };
         } catch (error) {

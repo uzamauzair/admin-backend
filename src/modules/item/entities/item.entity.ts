@@ -11,14 +11,17 @@ export class Item {
     @Prop()
     description: string;
 
-    @Prop({ required: true, min: 0.01 })
-    price: number;
-
     @Prop({ required: true, validate: /\S+\.\S+/ }) // Custom validator for URL format
     images: string[];
 
-    @Prop({ required: true, min: 0 })
-    quantity: number;
+    @Prop([
+        {
+            size: String,
+            price: Number,
+            quantity: Number,
+        },
+    ])
+    variants: Array<{ size: string; price: number; quantity: number }>;
 
     @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Category' })
     categoryId: mongoose.Schema.Types.ObjectId; // Assuming Category model has been defined

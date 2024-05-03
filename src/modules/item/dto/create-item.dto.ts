@@ -1,4 +1,7 @@
-import { IsNotEmpty, IsNumber, IsString, IsUrl, Min } from 'class-validator';
+import { IsNotEmpty, IsString, IsUrl, ValidateNested } from 'class-validator';
+import { Type } from 'class-transformer';
+import { VariantDto } from './variant-item.dto';
+
 
 export class CreateItemDto {
     @IsNotEmpty()
@@ -9,20 +12,15 @@ export class CreateItemDto {
     description: string;
 
     @IsNotEmpty()
-    @IsNumber()
-    @Min(0.01)
-    price: number;
-
-    @IsNotEmpty()
     @IsUrl({}, { each: true })
     images: string[];
 
     @IsNotEmpty()
-    @IsNumber()
-    @Min(0)
-    quantity: number;
-
-    @IsNotEmpty()
     @IsString()
     categoryId: string;
+
+    @IsNotEmpty()
+    @ValidateNested({ each: true })
+    @Type(() => VariantDto)
+    variants: VariantDto[];
 }
