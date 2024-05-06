@@ -1,10 +1,11 @@
-import { Controller, Post, Body, HttpStatus, HttpCode, BadRequestException, UseInterceptors, UploadedFiles, Get, Param, Put, Delete } from '@nestjs/common';
+import { Controller, Post, Body, HttpStatus, HttpCode, BadRequestException, UseInterceptors, UploadedFiles, Get, Param, Put, Delete, UseGuards } from '@nestjs/common';
 import { MulterS3 } from 'multer-s3';
 import { ItemsService } from './item.service';
 import { CreateItemDto } from './dto/create-item.dto';
 import { S3FileInterceptor } from 'src/common/interceptors/s3-file.interceptor';
 import { NestInterceptor } from '@nestjs/common';
 import { UpdateItemDto } from './dto/update-item.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('items')
 export class ItemsController {
@@ -34,6 +35,7 @@ export class ItemsController {
     }
 
     // GET /items - Get all items
+    @UseGuards(AuthGuard('jwt'))
     @Get()
     @HttpCode(HttpStatus.OK)
     async getAllItems() {

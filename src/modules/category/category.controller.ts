@@ -24,6 +24,9 @@ export class CategoriesController {
     @Get()
     @HttpCode(HttpStatus.OK) // Set HTTP status code to 200 (OK) for successful retrieval
     async findAllCategories() {
+        console.log("Log", process.env.AUTH0_ISSUER_URL);
+        console.log("Log2", process.env.AUTH0_AUDIENCE);
+
         return await this.categoriesService.findAllCategories();
     }
 
